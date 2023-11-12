@@ -1,0 +1,33 @@
+﻿@model ZeroHunger.DTOs.CollectRequestDTO
+
+@{
+    ViewBag.Title = "Collect Request";
+}
+
+<h2>Collect Request</h2>
+
+@using (Html.BeginForm("CollectRequest", "Restaurant", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MaxPreserveTime)
+        @Html.TextBoxFor(model => model.MaxPreserveTime, new { @class = "form-control", type = "datetime-local" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Status)
+        @Html.TextBoxFor(model => model.Status, new { @class = "form-control", @readonly = "readonly" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.CollectionAddress)
+        @Html.TextBoxFor(model => model.CollectionAddress, new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Next</button>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

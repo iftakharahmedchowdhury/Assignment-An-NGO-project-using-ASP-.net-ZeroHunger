@@ -1,0 +1,47 @@
+﻿
+@*@model ZeroHunger.DTOs.UserDTO>*@
+<p>
+    @Html.ActionLink("Logout", "Logout")
+    @Html.ActionLink("View Cart", "ViewCart")
+
+</p>
+
+<a href="@Url.Action("CollectRequest", "Restaurant")">
+    <button>Request for collect</button>
+</a>
+
+@{
+    // Get user id from cookie
+    var userInfoCookie = Request.Cookies["UserInfo"];
+    int userId = 0;
+
+    if (userInfoCookie != null)
+    {
+        // get user id from cookie and convert it into integer
+        int.TryParse(userInfoCookie["UserId"], out userId);
+    }
+}
+
+@*<a href="@Url.Action("OrderHistory", "User", new { userId = userId })">
+    <button>Show Order History</button>
+</a>*@
+
+<h2>Request History</h2>
+
+@*<table>
+    <tr>
+        <th>Order Number</th>
+        <th>Order Status</th>
+
+    </tr>
+    @foreach (var order in Model)
+    {
+        <tr>
+            <td>@order.OrderId</td>
+            <td>@order.OrderStatus</td>
+
+        </tr>
+    }
+</table>*@
+
+

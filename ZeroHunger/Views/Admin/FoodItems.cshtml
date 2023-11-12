@@ -1,0 +1,84 @@
+﻿@model List<ZeroHunger.DTOs.CollectRequestsFooditemDTO>
+
+@{
+    ViewBag.Title = "Food Items for Request";
+}
+
+<h2>Food Items for Request</h2>
+
+@if (Model != null && Model.Any())
+{
+
+    if (ViewBag.Status == "AssignedEmployee")
+    {
+        <div style="color: red; font-size: 18px;">Employee already assigned: @ViewBag.AssignedEmployeeName</div>
+    }
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Food Item ID</th>
+                <th>Request ID</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Description</th>
+                <!-- Add more columns if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var foodItem in Model)
+            {
+                <tr>
+                    <td>@foodItem.CollectRequestsFoodItemID</td>
+                    <td>@foodItem.RequestID</td>
+                    <td>@foodItem.ItemName</td>
+                    <td>@foodItem.Quantity</td>
+                    <td>@foodItem.ExpiryDate</td>
+                    <td>@foodItem.Description</td>
+                    <!-- Add more columns if needed -->
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Form to assign employee -->
+    <div>
+        <h3>Assign Employee</h3>
+        @using (Html.BeginForm("AssignEmployee", "Admin", FormMethod.Post))
+        {
+            <div class="form-group">
+                @Html.Hidden("requestId", Model.FirstOrDefault()?.RequestID) <!-- Pass the RequestID to the controller -->
+                <label for="employeeId">Select Employee:</label>
+                <select name="employeeId" class="form-control" required>
+                    <!-- Populate the dropdown with employees from the Users table -->
+
+                    @foreach (var employee in ViewBag.Employees)
+                    {
+                        var userIdProperty = employee.GetType().GetProperty("UserID");
+                        var userNameProperty = employee.GetType().GetProperty("Username");
+
+                        if (userIdProperty != null && userNameProperty != null)
+                        {
+                            var userId = userIdProperty.GetValue(employee, null);
+                            var userName = userNameProperty.GetValue(employee, null);
+
+                            <option value="@userId">@userName</option>
+                        }
+                        else
+                        {
+                            <option value="">No User Found</option>
+
+                        }
+                    }
+
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Assign Employee</button>
+        }
+    </div>
+}
+else
+{
+    <p>No food items available for the selected request.</p>
+}

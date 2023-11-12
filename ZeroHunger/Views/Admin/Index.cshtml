@@ -1,0 +1,43 @@
+﻿@model List<ZeroHunger.DTOs.CollectRequestDTO>
+
+@{
+    ViewBag.Title = "All Requests";
+}
+
+<h2>All Requests</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Max Preserve Time</th>
+                <th>Status</th>
+                <th>Collection Address</th>
+                <!-- Add more columns if needed -->
+                <th>Show items</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model)
+            {
+            <tr>
+                <td>@request.RequestID</td>
+                <td>@request.MaxPreserveTime</td>
+                <td>@request.Status</td>
+                <td>@request.CollectionAddress</td>
+                <td>@request.CollectionAddress</td>
+                <!-- Add more columns if needed -->
+                <td>
+                    <a href="@Url.Action("FoodItems", "Admin", new { requestId = request.RequestID })" class="btn btn-info">Show Food Items</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No requests available.</p>
+}

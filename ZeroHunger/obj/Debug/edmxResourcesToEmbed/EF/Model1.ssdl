@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="zerohungerDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="CollectRequests">
+    <Key>
+      <PropertyRef Name="RequestID" />
+    </Key>
+    <Property Name="RequestID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ResturentUserID" Type="int" Nullable="false" />
+    <Property Name="MaxPreserveTime" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="CollectionAddress" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="AssignedEmployeeID" Type="int" />
+    <Property Name="CollectionTime" Type="datetime" />
+    <Property Name="CompletionTime" Type="datetime" />
+  </EntityType>
+  <EntityType Name="CollectRequestsFooditem">
+    <Key>
+      <PropertyRef Name="CollectRequestsFoodItemID" />
+    </Key>
+    <Property Name="CollectRequestsFoodItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RequestID" Type="int" Nullable="false" />
+    <Property Name="ItemName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="ExpiryDate" Type="date" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="DeliveryConfirmation">
+    <Key>
+      <PropertyRef Name="ConfirmationID" />
+    </Key>
+    <Property Name="ConfirmationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ConfirmingEmployeeID" Type="int" Nullable="false" />
+    <Property Name="RequestID" Type="int" Nullable="false" />
+    <Property Name="ConfirmationTime" Type="datetime" Nullable="false" />
+    <Property Name="DetailsComments" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="StoredFoodItems">
+    <Key>
+      <PropertyRef Name="FoodItemID" />
+    </Key>
+    <Property Name="FoodItemID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="RequestID" Type="int" Nullable="false" />
+    <Property Name="ItemName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="ExpiryDate" Type="date" Nullable="false" />
+    <Property Name="Description" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Role" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="ContactInfo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Location" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__CollectRe__Assig__1367E606">
+    <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+    <End Role="CollectRequests" Type="Self.CollectRequests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CollectRequests">
+        <PropertyRef Name="AssignedEmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CollectRe__Reque__164452B1">
+    <End Role="CollectRequests" Type="Self.CollectRequests" Multiplicity="1" />
+    <End Role="CollectRequestsFooditem" Type="Self.CollectRequestsFooditem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CollectRequests">
+        <PropertyRef Name="RequestID" />
+      </Principal>
+      <Dependent Role="CollectRequestsFooditem">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__CollectRe__Restu__1273C1CD">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="CollectRequests" Type="Self.CollectRequests" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="CollectRequests">
+        <PropertyRef Name="ResturentUserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DeliveryC__Confi__1BFD2C07">
+    <End Role="Users" Type="Self.Users" Multiplicity="1" />
+    <End Role="DeliveryConfirmation" Type="Self.DeliveryConfirmation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="DeliveryConfirmation">
+        <PropertyRef Name="ConfirmingEmployeeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DeliveryC__Reque__1CF15040">
+    <End Role="CollectRequests" Type="Self.CollectRequests" Multiplicity="1" />
+    <End Role="DeliveryConfirmation" Type="Self.DeliveryConfirmation" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CollectRequests">
+        <PropertyRef Name="RequestID" />
+      </Principal>
+      <Dependent Role="DeliveryConfirmation">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__StoredFoo__Reque__1920BF5C">
+    <End Role="CollectRequests" Type="Self.CollectRequests" Multiplicity="1" />
+    <End Role="StoredFoodItems" Type="Self.StoredFoodItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CollectRequests">
+        <PropertyRef Name="RequestID" />
+      </Principal>
+      <Dependent Role="StoredFoodItems">
+        <PropertyRef Name="RequestID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="zerohungerDbModelStoreContainer">
+    <EntitySet Name="CollectRequests" EntityType="Self.CollectRequests" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CollectRequestsFooditem" EntityType="Self.CollectRequestsFooditem" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DeliveryConfirmation" EntityType="Self.DeliveryConfirmation" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="StoredFoodItems" EntityType="Self.StoredFoodItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__CollectRe__Assig__1367E606" Association="Self.FK__CollectRe__Assig__1367E606">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CollectRequests" EntitySet="CollectRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CollectRe__Reque__164452B1" Association="Self.FK__CollectRe__Reque__164452B1">
+      <End Role="CollectRequests" EntitySet="CollectRequests" />
+      <End Role="CollectRequestsFooditem" EntitySet="CollectRequestsFooditem" />
+    </AssociationSet>
+    <AssociationSet Name="FK__CollectRe__Restu__1273C1CD" Association="Self.FK__CollectRe__Restu__1273C1CD">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="CollectRequests" EntitySet="CollectRequests" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DeliveryC__Confi__1BFD2C07" Association="Self.FK__DeliveryC__Confi__1BFD2C07">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="DeliveryConfirmation" EntitySet="DeliveryConfirmation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DeliveryC__Reque__1CF15040" Association="Self.FK__DeliveryC__Reque__1CF15040">
+      <End Role="CollectRequests" EntitySet="CollectRequests" />
+      <End Role="DeliveryConfirmation" EntitySet="DeliveryConfirmation" />
+    </AssociationSet>
+    <AssociationSet Name="FK__StoredFoo__Reque__1920BF5C" Association="Self.FK__StoredFoo__Reque__1920BF5C">
+      <End Role="CollectRequests" EntitySet="CollectRequests" />
+      <End Role="StoredFoodItems" EntitySet="StoredFoodItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

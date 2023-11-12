@@ -1,0 +1,31 @@
+﻿@model ZeroHunger.DTOs.CollectRequestsFooditemDTO
+
+@using (Html.BeginForm("AddItem", "Resturent", FormMethod.Post, new { id = "addItemForm" }))
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Item Form Fields -->
+    <div class="form-group">
+        @Html.LabelFor(model => model.ItemName)
+        @Html.TextBoxFor(model => model.ItemName, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Quantity)
+        @Html.TextBoxFor(model => model.Quantity, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.ExpiryDate)
+        @Html.TextBoxFor(model => model.ExpiryDate, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description)
+        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary">Add</button>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,49 @@
+﻿@model ZeroHunger.DTOs.CollectRequestDTO
+
+@{
+    ViewBag.Title = "Item Details";
+}
+
+<h2>Collected Item Details</h2>
+
+@if (Model.CollectRequestsFooditems != null && Model.CollectRequestsFooditems.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.CollectRequestsFooditems)
+            {
+                <tr>
+
+                    <td>@item.ItemName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ExpiryDate</td>
+                    <td>@item.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No items have been added yet.</p>
+}
+
+<!-- ... (existing content) -->
+
+@if (Model.CollectRequestsFooditems != null && Model.CollectRequestsFooditems.Any())
+{
+    <!-- Existing table content -->
+
+    <a href="@Url.Action("ConfirmRequest", "Restaurant")" class="btn btn-success">Confirm Request</a>
+}
+
+
+<a href="@Url.Action("AddItem", "Restaurant")" class="btn btn-primary">Back to AddItem</a>
