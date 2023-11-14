@@ -37,10 +37,16 @@
     <Property Name="ConfirmationID" Type="Int32" Nullable="false" />
     <Property Name="ConfirmingEmployeeID" Type="Int32" Nullable="false" />
     <Property Name="RequestID" Type="Int32" Nullable="false" />
-    <Property Name="ConfirmationTime" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ConfirmationTime" Type="DateTime" Precision="3" />
     <Property Name="DetailsComments" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <NavigationProperty Name="CollectRequest" Relationship="Self.FK__DeliveryC__Reque__1CF15040" FromRole="DeliveryConfirmation" ToRole="CollectRequests" />
     <NavigationProperty Name="User" Relationship="Self.FK__DeliveryC__Confi__1BFD2C07" FromRole="DeliveryConfirmation" ToRole="Users" />
+    <Property Name="DeliveryLocation" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="DeliveryStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ItemName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="ExpiryDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="CompletionTime" Type="DateTime" Precision="3" />
   </EntityType>
   <EntityType Name="StoredFoodItem">
     <Key>

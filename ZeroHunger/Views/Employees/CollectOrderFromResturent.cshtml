@@ -1,0 +1,83 @@
+﻿@model List<ZeroHunger.EF.CollectRequest>
+
+<h2>Collect Orders from Restaurant</h2>
+<p>
+    @Html.ActionLink("Logout", "Logout")
+
+    <br />
+    @Html.ActionLink("Deshboard", "index")
+   
+
+</p>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Resturent User ID</th>
+                <th>Restaurant Name</th>
+                <th>Max Preserve Time</th>
+                <th>Status</th>
+                <th>Collection Address</th>
+                <th>Assigned Employee ID</th>
+                <th>Collection Time</th>
+                <th>Completion Time</th>
+                <th>Actions</th> 
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+            <tr>
+                <td>@order.RequestID</td>
+                <td>@order.ResturentUserID</td>
+                <td>
+                    @{
+                        // get restaurantName name from view bag
+                        var restaurantName = ViewBag.RestaurantNames.ContainsKey(order.ResturentUserID)
+                                ? ViewBag.RestaurantNames[order.ResturentUserID]
+                                : "N/A";
+                    }
+                    @restaurantName  @*output the restaurant name*@
+                </td>
+                <td>@order.MaxPreserveTime</td>
+                <td>@order.Status</td>
+                <td>@order.CollectionAddress</td>
+                <td>@order.AssignedEmployeeID</td>
+                <td>@order.CollectionTime</td>
+                <td>@order.CompletionTime</td>
+
+                <td>
+                    @if (order.CollectionTime == null)
+                    {
+                        @Html.ActionLink("CollectionTime", "CollectionTime", new { requestID = order.RequestID },
+                            new { @class = "btn btn-primary", onclick = "" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("CollectionTimee", "CollectionTime", new { requestID = order.RequestID },
+                            new { @class = "btn btn-primary", @disabled = "disabled", onclick = "return false;" })
+                    }
+
+                    @if (order.CompletionTime == null)
+                    {
+                        @Html.ActionLink("CompletionTime", "CompletionTime", new { requestID = order.RequestID },
+                            new { @class = "btn btn-success", onclick = "" })
+                    }
+                    else
+                    {
+                        @Html.ActionLink("CompletionTime", "CompletionTime", new { requestID = order.RequestID },
+                            new { @class = "btn btn-success", @disabled = "disabled", onclick = "return false;" })
+                    }        
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No collect orders available for the employee.</p>
+}

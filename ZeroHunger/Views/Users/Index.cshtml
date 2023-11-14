@@ -13,7 +13,9 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create New Employee", "Create", null, new {@class="btn btn-primary", style="margin-top:5px"})
+        @Html.ActionLink("Add Restaurant ", "SignUp", "Restaurant", null, new {@class="btn btn-primary", style = "margin-top:5px" })
+        @Html.ActionLink("Admin Dashboard ", "Index", "Admin", null, new {@class="btn btn-primary", style = "margin-top:5px" })
     </p>
     <table class="table">
         <tr>

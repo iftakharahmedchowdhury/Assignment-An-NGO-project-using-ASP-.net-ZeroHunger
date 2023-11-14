@@ -1,0 +1,5 @@
+#status
+Processing --->> when resturent will request
+AssignedEmployee---->> when admin assigned employee
+collected--> when employee collect food
+completed--> stored in ngo storage

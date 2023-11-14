@@ -4,6 +4,11 @@
     ViewBag.Title = "Collect Request";
 }
 
+<br />
+@Html.ActionLink("Deshboard", "Deshboard", null, new { @class = "btn btn-warning"})
+<br />
+@Html.ActionLink("Logout", "Logout", null, new { @class = "btn btn-primary", style = "margin-top: 5px;" })
+
 <h2>Collect Request</h2>
 
 @using (Html.BeginForm("CollectRequest", "Restaurant", FormMethod.Post))

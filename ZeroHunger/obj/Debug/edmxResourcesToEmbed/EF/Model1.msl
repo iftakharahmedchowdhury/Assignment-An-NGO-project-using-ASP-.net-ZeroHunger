@@ -30,6 +30,12 @@
     <EntitySetMapping Name="DeliveryConfirmations">
       <EntityTypeMapping TypeName="zerohungerDbModel.DeliveryConfirmation">
         <MappingFragment StoreEntitySet="DeliveryConfirmation">
+          <ScalarProperty Name="CompletionTime" ColumnName="CompletionTime" />
+          <ScalarProperty Name="ExpiryDate" ColumnName="ExpiryDate" />
+          <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+          <ScalarProperty Name="ItemName" ColumnName="ItemName" />
+          <ScalarProperty Name="DeliveryStatus" ColumnName="DeliveryStatus" />
+          <ScalarProperty Name="DeliveryLocation" ColumnName="DeliveryLocation" />
           <ScalarProperty Name="ConfirmationID" ColumnName="ConfirmationID" />
           <ScalarProperty Name="ConfirmingEmployeeID" ColumnName="ConfirmingEmployeeID" />
           <ScalarProperty Name="RequestID" ColumnName="RequestID" />

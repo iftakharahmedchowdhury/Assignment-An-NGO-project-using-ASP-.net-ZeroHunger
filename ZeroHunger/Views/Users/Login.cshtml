@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Index";
 }
-
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
 <!DOCTYPE html>
 
 <html>
@@ -29,7 +29,8 @@
             <button type="submit" class="btn btn-primary">Login</button>
         }
         <div>
-            @Html.ActionLink("Sign Up", "SignUp","Users", null, new { @class = "btn btn-success" })
+            @* @Html.ActionLink("Sign Up", "SignUp","Users", null, new { @class = "btn btn-success" })*@
+            @Html.ActionLink("Sign Up", "SignUp", "Restaurant", null, new { @class = "btn btn-success", style = "margin-top: 5px" })
         </div>
 
         @section Scripts {
@@ -38,3 +39,4 @@
     </div>
 </body>
 </html>
+<br />

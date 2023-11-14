@@ -1,0 +1,70 @@
+﻿@model List<ZeroHunger.EF.StoredFoodItem>
+
+<p>
+
+    @Html.ActionLink("View ready delivery items", "ViewReadyForDelivery")
+    <br>
+    @Html.ActionLink("Deshboard", "index")
+    <br />
+    @Html.ActionLink("Logout", "Logout")
+    
+</p>
+
+<h2>Stored Food Items</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Food Item ID</th>
+                <th>Request ID</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Description</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var storedFoodItem in Model)
+            {
+                <tr>
+                    <td>@storedFoodItem.FoodItemID</td>
+                    <td>@storedFoodItem.RequestID</td>
+                    <td>@storedFoodItem.ItemName</td>
+                    <td>@storedFoodItem.Quantity</td>
+                    <td>@storedFoodItem.ExpiryDate</td>
+                    <td>@storedFoodItem.Description</td>
+                    <td>
+                        @using (Html.BeginForm("ReadyForDelivery", "Admin", FormMethod.Post, new { onsubmit = "disableButton(this);" }))
+                        {
+                            @Html.Hidden("RequestId", storedFoodItem.RequestID)
+                            @Html.Hidden("FoodItemId", storedFoodItem.FoodItemID)
+                            @Html.Hidden("ItemName", storedFoodItem.ItemName)
+                            @Html.Hidden("Quantity", storedFoodItem.Quantity)
+                            @Html.Hidden("ExpiryDate", storedFoodItem.ExpiryDate.ToString("yyyy-MM-dd"))
+                            @Html.Hidden("Description", storedFoodItem.Description)
+
+                            if (Session["DeliveryInfo"] != null &&
+                                ((List<ZeroHunger.EF.DeliveryItem>)Session["DeliveryInfo"])
+                                .Any(item => item.FoodItemId == storedFoodItem.FoodItemID))
+                            {
+                                <input type="button" class="mark-as-ready-btn" value="Already Added" disabled="disabled">
+                            }
+                            else
+                            {
+                                <input type="submit" class="mark-as-ready-btn" value="Ready For Delivery">
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No stored food items available.</p>
+}
+

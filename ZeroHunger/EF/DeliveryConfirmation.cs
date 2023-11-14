@@ -17,8 +17,14 @@ namespace ZeroHunger.EF
         public int ConfirmationID { get; set; }
         public int ConfirmingEmployeeID { get; set; }
         public int RequestID { get; set; }
-        public System.DateTime ConfirmationTime { get; set; }
+        public Nullable<System.DateTime> ConfirmationTime { get; set; }
         public string DetailsComments { get; set; }
+        public string DeliveryLocation { get; set; }
+        public string DeliveryStatus { get; set; }
+        public string ItemName { get; set; }
+        public int Quantity { get; set; }
+        public System.DateTime ExpiryDate { get; set; }
+        public Nullable<System.DateTime> CompletionTime { get; set; }
     
         public virtual CollectRequest CollectRequest { get; set; }
         public virtual User User { get; set; }

@@ -4,6 +4,12 @@
     ViewBag.Title = "Item Details";
 }
 
+
+<br />
+@Html.ActionLink("Deshboard", "Deshboard", null, new { @class = "btn btn-warning" })
+<br />
+@Html.ActionLink("Logout", "Logout", null, new { @class = "btn btn-primary", style = "margin-top: 5px;" })
+
 <h2>Collected Item Details</h2>
 
 @if (Model.CollectRequestsFooditems != null && Model.CollectRequestsFooditems.Any())
@@ -36,11 +42,10 @@ else
     <p>No items have been added yet.</p>
 }
 
-<!-- ... (existing content) -->
+<!-- Confirm request button -->
 
 @if (Model.CollectRequestsFooditems != null && Model.CollectRequestsFooditems.Any())
 {
-    <!-- Existing table content -->
 
     <a href="@Url.Action("ConfirmRequest", "Restaurant")" class="btn btn-success">Confirm Request</a>
 }

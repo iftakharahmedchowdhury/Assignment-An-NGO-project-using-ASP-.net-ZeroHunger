@@ -3,7 +3,8 @@
 @{
     ViewBag.Title = "Food Items for Request";
 }
-
+@Html.ActionLink("Admin Dashboard ", "Index", "Admin", null, new { @class = "btn btn-primary", style = "margin-top:5px" })
+@Html.ActionLink("Logout ", "Logout", "Admin", null, new { @class = "btn btn-primary", style = "margin-top:5px" })
 <h2>Food Items for Request</h2>
 
 @if (Model != null && Model.Any())
@@ -23,7 +24,6 @@
                 <th>Quantity</th>
                 <th>Expiry Date</th>
                 <th>Description</th>
-                <!-- Add more columns if needed -->
             </tr>
         </thead>
         <tbody>
@@ -36,7 +36,6 @@
                     <td>@foodItem.Quantity</td>
                     <td>@foodItem.ExpiryDate</td>
                     <td>@foodItem.Description</td>
-                    <!-- Add more columns if needed -->
                 </tr>
             }
         </tbody>
@@ -48,10 +47,10 @@
         @using (Html.BeginForm("AssignEmployee", "Admin", FormMethod.Post))
         {
             <div class="form-group">
-                @Html.Hidden("requestId", Model.FirstOrDefault()?.RequestID) <!-- Pass the RequestID to the controller -->
+                @Html.Hidden("requestId", Model.FirstOrDefault()?.RequestID) <!-- pass the RequestID to the controller -->
                 <label for="employeeId">Select Employee:</label>
                 <select name="employeeId" class="form-control" required>
-                    <!-- Populate the dropdown with employees from the Users table -->
+                    <!-- get employee from view bag -->
 
                     @foreach (var employee in ViewBag.Employees)
                     {

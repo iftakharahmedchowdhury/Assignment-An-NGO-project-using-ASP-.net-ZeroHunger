@@ -1,47 +1,157 @@
-﻿
-@*@model ZeroHunger.DTOs.UserDTO>*@
+﻿@model IEnumerable<ZeroHunger.EF.CollectRequest>
+
+@{
+    ViewBag.Title = "Deshboard";
+}
 <p>
-    @Html.ActionLink("Logout", "Logout")
-    @Html.ActionLink("View Cart", "ViewCart")
+    <br />
+    @Html.ActionLink("Logout", "Logout", null, new { @class = "btn btn-primary" })
+
+   
 
 </p>
 
 <a href="@Url.Action("CollectRequest", "Restaurant")">
-    <button>Request for collect</button>
+    <button class="btn btn-success">Request for collect</button>
 </a>
 
 @{
-    // Get user id from cookie
+    // Get Restaurant user id from cookies
     var userInfoCookie = Request.Cookies["UserInfo"];
     int userId = 0;
 
     if (userInfoCookie != null)
     {
-        // get user id from cookie and convert it into integer
-        int.TryParse(userInfoCookie["UserId"], out userId);
+       
+        int.TryParse(userInfoCookie["UserId"], out userId);// convert into integer bcz it stoed as string in cookies
     }
 }
 
-@*<a href="@Url.Action("OrderHistory", "User", new { userId = userId })">
-    <button>Show Order History</button>
-</a>*@
+<!DOCTYPE html>
 
-<h2>Request History</h2>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Deshboard</title>
+</head>
+<body>
+    <h2>Request history</h2>
 
-@*<table>
-    <tr>
-        <th>Order Number</th>
-        <th>Order Status</th>
-
-    </tr>
-    @foreach (var order in Model)
-    {
+    <table class="table">
         <tr>
-            <td>@order.OrderId</td>
-            <td>@order.OrderStatus</td>
-
+            <th>
+                @Html.DisplayNameFor(model => model.RequestID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MaxPreserveTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CollectionAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CollectionTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompletionTime)
+            </th>
+            <th>
+                Delivery Man
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User1.Username)
+            </th>
+            <th>
+                Show Items
+            </th>
         </tr>
-    }
-</table>*@
+
+        @foreach (var item in Model)
+        {
+            <tr>
 
 
+                <td>
+                    @Html.DisplayFor(modelItem => item.RequestID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaxPreserveTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CollectionAddress)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CollectionTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CompletionTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User1.Username)
+                </td>
+                <td>
+                 
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal_@item.RequestID">
+                        View Food Items
+                    </button>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal_@item.RequestID" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Food Items for Request ID: @item.RequestID</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Food Item ID</th>
+                                                <th>Item Name</th>
+                                                <th>Item Quantity</th>
+                                                <th>Item ExpiryDate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var foodItem in item.CollectRequestsFooditems)
+                                            {
+                                                <tr>
+                                                    <td>@foodItem.CollectRequestsFoodItemID</td>
+                                                    <td>@foodItem.ItemName</td>
+                                                    <td>@foodItem.Quantity</td>
+                                                    <td>@foodItem.ExpiryDate</td>
+                                                   
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+
+            </tr>
+        }
+
+    </table>
+
+</body>
+</html>

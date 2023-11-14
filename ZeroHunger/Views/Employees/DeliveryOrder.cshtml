@@ -1,0 +1,116 @@
+﻿@model IEnumerable<ZeroHunger.EF.DeliveryConfirmation>
+
+@{
+    ViewBag.Title = "Delivery Order";
+}
+
+<p>
+    @Html.ActionLink("Logout", "Logout")
+    <br />
+    @Html.ActionLink("Deshboard", "index")
+ 
+
+</p>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DeliveryOrder</title>
+</head>
+<body>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ConfirmationTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CompletionTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DetailsComments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ItemName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quantity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ExpiryDate)
+            </th>
+
+
+            <th></th>
+        </tr>
+    
+    @foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.Username)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ConfirmationTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CompletionTime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DetailsComments)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeliveryLocation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DeliveryStatus)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ExpiryDate)
+        </td>
+
+        <td>
+            @if (item.ConfirmationTime == null)
+            {
+                @Html.ActionLink("CollectionTimee", "UpdateConfirmationTime", new { confirmationId = item.ConfirmationID },
+                    new { @class = "btn btn-primary", onclick = "" })
+            }
+            else
+            {
+                @Html.ActionLink("CollectionTimee", "UpdateConfirmationTime", new { confirmationId = item.ConfirmationID },
+                    new { @class = "btn btn-primary", @disabled = "disabled", onclick = "return false;" })
+            }
+
+            @if (item.CompletionTime == null)
+            {
+                @Html.ActionLink("CompletionTime", "UpdateCompletionTime", new { confirmationId = item.ConfirmationID },
+                    new { @class = "btn btn-success", onclick = "" })
+            }
+            else
+            {
+                @Html.ActionLink("CompletionTime", "UpdateCompletionTime", new { confirmationId = item.ConfirmationID },
+                    new { @class = "btn btn-success", @disabled = "disabled", onclick = "return false;" })
+            }
+        </td>
+    </tr>
+    }
+    
+    </table>
+</body>
+</html>

@@ -1,0 +1,69 @@
+﻿@model ZeroHunger.EF.DeliveryConfirmation
+
+@{
+    ViewBag.Title = "Ready for Delivery";
+}
+
+<h2>Items Ready for Delivery</h2>
+
+@if (ViewBag.ProductReadyForDeliveryVB != null && ViewBag.ProductReadyForDeliveryVB.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Request Id</th>
+                <th>Food Item ID</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+                <th>Expiry Date</th>
+                <th>Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in ViewBag.ProductReadyForDeliveryVB)
+            {
+                <tr>
+                    <td>@item.RequestId</td>
+                    <td>@item.FoodItemId</td>
+                    <td>@item.ItemName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.ExpiryDate.ToString("yyyy-MM-dd")</td>
+                    <td>@item.Description</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <!-- Assign emloyee and details form -->
+    <h3>Delivery Confirmation Form</h3>
+
+    using (Html.BeginForm("SubmitDeliveryConfirmation", "Admin", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.DetailsComments)
+            @Html.TextBoxFor(model => model.DetailsComments, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DeliveryLocation)
+            @Html.TextBoxFor(model => model.DeliveryLocation, new { @class = "form-control" })
+        </div>
+
+        <div class="form-group">
+            @Html.Label("Select Employee")
+            @Html.DropDownListFor(model => model.ConfirmingEmployeeID, (IEnumerable<SelectListItem>)ViewBag.EmployeeList, "Select Employee", new { @class = "form-control" })
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit Confirmation</button>
+    }
+}
+else
+{
+    <p>No items are ready for delivery.</p>
+}
+
+@Html.ActionLink("Back to Request for Food Delivery", "RequestForFoodDelivery")
+<br />
+@Html.ActionLink("Deshboard", "index")
+<br>
+@Html.ActionLink("Logout", "Logout")

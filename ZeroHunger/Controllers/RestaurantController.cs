@@ -11,65 +11,13 @@ namespace ZeroHunger.Controllers
 {
     public class RestaurantController : Controller
     {
-        // GET: Restaurant
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        [HttpPost]
-
-        public ActionResult Index(UserDTO User)
-        {
-            var db = new zerohungerDbEntities();
-            var config = new MapperConfiguration(cfg => {
-                cfg.CreateMap<UserDTO, User>();
-            });
-            var mapper = new Mapper(config);
-            var conData = mapper.Map<User>(User);
-
-            var existingUser = db.Users.FirstOrDefault(c => c.Username == conData.Username);
-
-          
-
-
-
-            if (existingUser != null && conData.Password == existingUser.Password && existingUser.Role == "Restaurant")
-            {
-                // Create cookie so that it can store user information
-                HttpCookie UserCookie = new HttpCookie("UserInfo");
-                UserCookie["Username"] = existingUser.Username;
-                UserCookie["UserId"] = existingUser.UserID.ToString();
-                UserCookie.Expires = DateTime.Now.AddMinutes(2); // Set the cookie to expire time
-                Response.Cookies.Add(UserCookie);
-
-                return RedirectToAction("Deshboard", "Restaurant");
-            }
-            else if (existingUser != null && conData.Password == existingUser.Password && existingUser.Role == "Employee")
-            {
-                HttpCookie EmployeeCookie = new HttpCookie("EmployeeInfo");
-                EmployeeCookie["Username"] = existingUser.Username;
-                EmployeeCookie["UserId"] = existingUser.UserID.ToString();
-                EmployeeCookie.Expires = DateTime.Now.AddMinutes(2); //set time
-                Response.Cookies.Add(EmployeeCookie);
-
-                return RedirectToAction("Index", "Admin");
-
-            }
-            else
-            {
-                ModelState.AddModelError("", "Invalid username or password");
-                return View();
-            }
-        }
-
-
+   
         public ActionResult SignUp()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult SignUp(UserDTO c)
+        public ActionResult SignUp([Bind(Include = "UserID,Username,Password,Role,Name,ContactInfo,Location")] UserDTO c)
         {
             var db = new zerohungerDbEntities();
             var config = new MapperConfiguration(cfg => {
@@ -79,7 +27,7 @@ namespace ZeroHunger.Controllers
             var conData = mapper.Map<User>(c);
             db.Users.Add(conData);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Login","Users");
 
         }
 
@@ -92,13 +40,17 @@ namespace ZeroHunger.Controllers
 
             if (Request.Cookies["UserInfo"] != null && int.TryParse(Request.Cookies["UserInfo"]["UserId"], out userId))
             {
-                /*var userOrders = db.OrderDetails.Where(o => o.CusId == userId).ToList();
+                /*var userOrders = db.CollectRequests.Where(o => o.ResturentUserID == userId).ToList();
                 return View(userOrders);*/
-                return View();
+                var userOrders = db.CollectRequests
+               .Where(o => o.ResturentUserID == userId).OrderByDescending(o => o.RequestID).ToList();
+
+                return View(userOrders);
+
             }
 
 
-            return View("Error");
+            return RedirectToAction("Login","Users");
 
 
         }
@@ -117,19 +69,6 @@ namespace ZeroHunger.Controllers
             return RedirectToAction("Login","Users");
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         public ActionResult CollectRequest()
         {
             CollectRequestDTO collectRequest = new CollectRequestDTO
@@ -140,59 +79,59 @@ namespace ZeroHunger.Controllers
             return View(collectRequest);
         }
 
-        // Action to handle the submission of the collect request form
+        //submit the collection requset
         [HttpPost]
         public ActionResult CollectRequest(CollectRequestDTO collectRequest)
         {
-            // Save collect request details to session
+            // adding collect request in CollectRequest seassion
             Session["CollectRequest"] = collectRequest;
 
-            // Redirect to the page for adding items
+            // go to add item page
             return RedirectToAction("AddItem");
         }
 
-        // Action to display the form for adding items to the collect request
+       
         public ActionResult AddItem()
         {
             return View();
         }
 
-        // Action to handle the submission of the item form
+        // submit Add item
         [HttpPost]
         public ActionResult AddItem(CollectRequestsFooditemDTO item)
         {
             // Retrieve collect request from session
             var collectRequest = Session["CollectRequest"] as CollectRequestDTO;
 
-            // Ensure collect request exists in session
+            // make sure that i have collectRequest seassion
             if (collectRequest == null)
             {
                 return RedirectToAction("CollectRequest");
             }
 
-            // Initialize the list if it doesn't exist
+            // check CollectRequestsFooditems is null or nor if null initialize
             if (collectRequest.CollectRequestsFooditems == null)
             {
                 collectRequest.CollectRequestsFooditems = new List<CollectRequestsFooditemDTO>();
             }
 
-            // Add the item to the collect request
+            // add item in CollectRequestsFooditems
             collectRequest.CollectRequestsFooditems.Add(item);
 
-            // Save updated collect request to session
+            // update seassion so that we also can store collect request items
             Session["CollectRequest"] = collectRequest;
 
-            // Redirect to the page for adding more items or displaying details
+            
             return RedirectToAction("AddItem");
         }
 
-        // Action to show details of the collected items
+       
         public ActionResult ShowResItemDetails()
         {
-            // Retrieve collect request from session
-            var collectRequest = Session["CollectRequest"] as CollectRequestDTO;
+            // Retrieve data of CollectRequest seassion 
+            var collectRequest = Session["CollectRequest"] as CollectRequestDTO; //casting retrive value to CollectRequestDTO type.
 
-            // Ensure collect request exists in session
+            
             if (collectRequest == null)
             {
                 return RedirectToAction("CollectRequest");
@@ -201,13 +140,9 @@ namespace ZeroHunger.Controllers
             return View(collectRequest);
         }
 
-
-
-
-
         public ActionResult ConfirmRequest()
         {
-            // Retrieve collect request from session
+            // Get all data from seassion CollectRequest
             var collectRequest = Session["CollectRequest"] as CollectRequestDTO;
 
             // Ensure collect request exists in session
@@ -216,10 +151,10 @@ namespace ZeroHunger.Controllers
                 return RedirectToAction("CollectRequest");
             }
 
-            // Get user information from the cookie
+            // Get user id from cookie name it integer because cookie store string type data
             var userId = Convert.ToInt32(Request.Cookies["UserInfo"]["UserId"]);
 
-            // Save the main request details in the CollectRequest table
+            // Save the resource in database
             using (var db = new zerohungerDbEntities())
             {
                 var newRequest = new CollectRequest
@@ -233,10 +168,10 @@ namespace ZeroHunger.Controllers
                 db.CollectRequests.Add(newRequest);
                 db.SaveChanges();
 
-                // Retrieve the generated RequestID
+                // After save request id in db it ensure it can retrive request id
                 var requestId = newRequest.RequestID;
 
-                // Save the associated items in the CollectRequestsFoodItem table
+                // Save item against the request id in CollectRequestsFoodItem
                 foreach (var item in collectRequest.CollectRequestsFooditems)
                 {
                     var newItem = new CollectRequestsFooditem
@@ -254,17 +189,11 @@ namespace ZeroHunger.Controllers
                 db.SaveChanges();
             }
 
-            // Clear the session after storing data in the database
+            // After complete the store data in database clear seassion
             Session["CollectRequest"] = null;
 
-            return RedirectToAction("Index", "Home"); // Redirect to the home page or another suitable page
+            return RedirectToAction("Deshboard", "Restaurant");
         }
-
-
-
-
-
-
 
     }
 }

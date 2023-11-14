@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<p>
+    @Html.ActionLink("Logout", "Logout")
+
+</p>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <div>
+        <a href="@Url.Action("CollectOrder", "Employees")">
+            <button>Collect Order</button>
+        </a>
+
+        <a href="@Url.Action("DeliveryOrder", "Employees")">
+            <button>Delivery order</button>
+        </a>
+    </div>
+</body>
+</html>

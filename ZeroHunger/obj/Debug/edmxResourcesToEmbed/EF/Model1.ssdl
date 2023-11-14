@@ -31,8 +31,14 @@
     <Property Name="ConfirmationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="ConfirmingEmployeeID" Type="int" Nullable="false" />
     <Property Name="RequestID" Type="int" Nullable="false" />
-    <Property Name="ConfirmationTime" Type="datetime" Nullable="false" />
+    <Property Name="ItemName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Quantity" Type="int" Nullable="false" />
+    <Property Name="ExpiryDate" Type="date" Nullable="false" />
+    <Property Name="DeliveryLocation" Type="varchar" MaxLength="200" Nullable="false" />
+    <Property Name="ConfirmationTime" Type="datetime" />
+    <Property Name="CompletionTime" Type="datetime" />
     <Property Name="DetailsComments" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DeliveryStatus" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="StoredFoodItems">
     <Key>

@@ -4,6 +4,11 @@
     ViewBag.Title = "Add Item";
 }
 
+<br />
+@Html.ActionLink("Deshboard", "Deshboard", null, new { @class = "btn btn-warning" })
+<br />
+@Html.ActionLink("Logout", "Logout", null, new { @class = "btn btn-primary", style = "margin-top: 5px;" })
+
 <h2>Add Item</h2>
 
 @using (Html.BeginForm("AddItem", "Restaurant", FormMethod.Post))
@@ -31,7 +36,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Add Item</button>
-    <a href="@Url.Action("ShowResItemDetails", "Restaurant")" class="btn btn-secondary">View Added item</a>
+    <a href="@Url.Action("ShowResItemDetails", "Restaurant")" class="btn btn-success">View Added item</a>
 }
 
 @section Scripts {
