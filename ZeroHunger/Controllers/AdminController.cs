@@ -152,10 +152,16 @@ namespace ZeroHunger.Controllers
             else
             {
                 var db = new zerohungerDbEntities();
-                    var employees= db.Users
-                        .Where(u => u.Role == "Employee")
-                        .ToList();
-                
+                /*var employees= db.Users
+                    .Where(u => u.Role == "Employee")
+                    .ToList();*/
+                var employees = db.Users
+                    .Where(u => u.Role == "Employee" &&
+                    !db.DeliveryConfirmations.Any(dc => dc.ConfirmingEmployeeID == u.UserID && 
+                     dc.DeliveryStatus == "Processing"))
+                    .ToList();
+
+
 
 
                 ViewBag.ProductReadyForDeliveryVB = readyDeliveryItems;
