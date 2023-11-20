@@ -1,5 +1,6 @@
-#status
+#status for collect order from Restaurants
+
 Processing --->> when resturent will request
 AssignedEmployee---->> when admin assigned employee
-collected--> when employee collect food
-completed--> stored in ngo storage
+collected-->> when employee collect food
+completed-->> stored in ngo storage
